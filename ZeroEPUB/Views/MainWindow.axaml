@@ -8,16 +8,19 @@
         x:Class="ZeroEPUB.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
         Title="ZeroEPUB">
+	<PackageReference Include="Avalonia.HtmlRenderer" Version="11.0.0" />
 	<!-- Create the menu for the user to open EPUB files-->
 	<DockPanel>
 		<Menu DockPanel.Dock="Top">
 			<MenuItem Header="_File">
-				<MenuItem Header="_Open..."/>
+				<MenuItem Header="_Open..." Click="OpenFile"/>
 				<Separator/>
-				<MenuItem Header="_Exit" Click="ExitApp"/>
+				<MenuItem Header="_Help..."/>
 			</MenuItem>
 		</Menu>
 		<TextBlock/>
 	</DockPanel>
+	
+	<
 </Window>
 
