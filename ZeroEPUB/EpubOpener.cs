@@ -1,4 +1,6 @@
-﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+﻿using Avalonia.Controls;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -6,6 +8,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace ZeroEPUB
 {
@@ -33,7 +36,25 @@ namespace ZeroEPUB
 
         public string GetContents(string ebook, int chapter)
         {
-            FileStream contents = File.OpenRead($"{homeDir}/.zeroepub/${ebook}/content.opf");
+            string[] allfiles = Directory.GetFiles($"{homeDir}/.zeroepub/${ebook}");
+            string contentFile = "";
+            foreach (var file in allfiles)
+            {
+                FileInfo info = new FileInfo(file);
+                if (info.Name == "content.opf")
+                {
+                    contentFile = info.FullName;
+                    break;
+                }
+            }
+
+            XmlDocument doc = new XmlDocument();
+
+            doc.Load(contentFile);
+
+            XmlNodeList items = doc.SelectNodes("//manifest/item[@media-type='application/xhtml+xml']");
+
+            List<string> chapters = new List<string>();
 
             return "silly";
         }
