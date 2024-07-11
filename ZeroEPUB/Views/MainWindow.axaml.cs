@@ -31,6 +31,7 @@ public partial class MainWindow : Window
         {
             // send file to epub opener
             opener.OpenEpub(files[0].TryGetLocalPath());
+            opener.GetContents(files[0].Name, 0);
         }
     }
 }

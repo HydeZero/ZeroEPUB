@@ -1,11 +1,13 @@
 ﻿using Avalonia.Controls;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.VisualBasic;
+using Microsoft.VisualBasic.FileIO;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
@@ -24,6 +26,11 @@ namespace ZeroEPUB
 
                 using (var archive = new ZipArchive(epub))
                 {
+                    DirectoryInfo extractionDir = new($"{homeDir}/.zeroepub/{input.Split('\\')[input.Split('\\').Length - 1]}");
+                    if (extractionDir.Exists)
+                    {
+                        extractionDir.Delete(true);
+                    }
                     archive.ExtractToDirectory($"{homeDir}/.zeroepub/{input.Split('\\')[input.Split('\\').Length - 1]}"); // this is very inefficient
                 }
             }
@@ -36,14 +43,16 @@ namespace ZeroEPUB
 
         public string GetContents(string ebook, int chapter)
         {
-            string[] allfiles = Directory.GetFiles($"{homeDir}/.zeroepub/${ebook}");
+            string[] allfiles = Directory.GetFiles($"{homeDir}/.zeroepub/{ebook}", "*.*", System.IO.SearchOption.AllDirectories);
             string contentFile = "";
+            string parentDir = "";
             foreach (var file in allfiles)
             {
                 FileInfo info = new FileInfo(file);
                 if (info.Name == "content.opf")
                 {
                     contentFile = info.FullName;
+                    parentDir = info.DirectoryName;
                     break;
                 }
             }
@@ -56,7 +65,13 @@ namespace ZeroEPUB
 
             List<string> chapters = new List<string>();
 
-            return "silly";
+            foreach (XmlNode node in items)
+            {
+                string href = node.Attributes["href"].Value;
+                chapters.Add(href);
+            }
+
+            return File.ReadAllText($"{parentDir}/{chapters[chapter]}");
         }
     }
 }
