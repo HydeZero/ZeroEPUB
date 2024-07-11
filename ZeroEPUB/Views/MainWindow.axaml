@@ -14,7 +14,7 @@
 			<MenuItem Header="_File">
 				<MenuItem Header="_Open..."/>
 				<Separator/>
-				<MenuItem Header="_Exit" Click=""/>
+				<MenuItem Header="_Exit" Click="ExitApp"/>
 			</MenuItem>
 		</Menu>
 		<TextBlock/>
