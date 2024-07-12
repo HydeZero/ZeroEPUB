@@ -5,6 +5,7 @@ using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.FileIO;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -28,12 +29,13 @@ namespace ZeroEPUB
 
                 using (var archive = new ZipArchive(epub))
                 {
-                    DirectoryInfo extractionDir = new($"{homeDir}/.zeroepub/{input.Split('\\')[input.Split('\\').Length - 1]}");
+                    string processedDir = $"{homeDir}/.zeroepub/{input.Split('\\')[input.Split('\\').Length - 1].Split('.').First()}";
+                    DirectoryInfo extractionDir = new(processedDir);
                     if (extractionDir.Exists)
                     {
                         extractionDir.Delete(true);
                     }
-                    archive.ExtractToDirectory($"{homeDir}/.zeroepub/{input.Split('\\')[input.Split('\\').Length - 1]}"); // this is very inefficient
+                    archive.ExtractToDirectory(processedDir); // this is very inefficient
                 }
             }
             catch (FileNotFoundException)
@@ -45,7 +47,7 @@ namespace ZeroEPUB
 
         public string GetContents(string ebook, int chapter)
         {
-            string[] allfiles = Directory.GetFiles($"{homeDir}/.zeroepub/{ebook}", "*.*", System.IO.SearchOption.AllDirectories);
+            string[] allfiles = Directory.GetFiles($"{homeDir}/.zeroepub/{ebook.Split('\\')[ebook.Split('\\').Length - 1].Split('.').First()}", "*.*", System.IO.SearchOption.AllDirectories);
             string contentFile = "";
             string parentDir = "";
             foreach (var file in allfiles)
@@ -53,31 +55,24 @@ namespace ZeroEPUB
                 FileInfo info = new FileInfo(file);
                 if (info.Name == "content.opf")
                 {
-                    contentFile = info.FullName;
+                    contentFile = info.Name;
                     parentDir = info.DirectoryName;
                     break;
                 }
             }
 
-            XElement doc = XElement.Load(contentFile);
-
-            var chapters = doc.Descendants("manifest").SelectMany(a => a.Elements("item")).Where(b => (string)b.Attribute("media-type") == "application/xhtml-xml");
-
-            List<Dictionary<string, string>> chapterList = chapters.Select(element => new Dictionary<string, string>());
+            Debug.WriteLine(Path.Combine(parentDir, contentFile));
 
 
-            var chapterDict = chapters.Select(b => new
-            {
-                href = (string)b.Attribute("href"),
-                id = (string)b.Attribute("id"),
-                media_type = (string)b.Attribute("media-type")
-            }).ToDictionary(x => "id", x => new { x.id, x.href });
+            XElement doc = XElement.Load(File.Open(Path.Combine(parentDir, contentFile), FileMode.OpenOrCreate, FileAccess.Read));
+            // Dont touch this if it works
+            var chapters = doc.Elements("item").SelectMany(a => (string)a.Attribute("media-type") == "application/xhtml-xml");
 
-            List<string> chapterHref = new List<string>();
+            var chapterHref = new List<string>();
 
             foreach (var chapt in chapters)
             {
-                chapterHref.Add((string)chapt.Attribute("href"));
+                chapterHref.Add(chapt.);
             }
 
             return File.ReadAllText($"{parentDir}/{chapterHref[chapter]}");
