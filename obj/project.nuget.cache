@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "OyhQvXet8YE=",
+  "dgSpecHash": "pxya4abYegs=",
   "success": true,
-  "projectFilePath": "c:\\Users\\glen\\CodingProjects\\Local\\C#\\ZeroEPUB\\ZeroEPUB\\ZeroEPUB\\ZeroEPUB.csproj",
+  "projectFilePath": "c:\\Users\\glen\\CodingProjects\\Local\\C#\\ZeroEPUB\\ZeroEPUB\\ZeroEPUB.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\glen\\.nuget\\packages\\avalonia\\11.0.10\\avalonia.11.0.10.nupkg.sha512",
     "C:\\Users\\glen\\.nuget\\packages\\avalonia.angle.windows.natives\\2.1.0.2023020321\\avalonia.angle.windows.natives.2.1.0.2023020321.nupkg.sha512",

@@ -4585,11 +4585,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "c:\\Users\\glen\\CodingProjects\\Local\\C#\\ZeroEPUB\\ZeroEPUB\\ZeroEPUB\\ZeroEPUB.csproj",
+      "projectUniqueName": "c:\\Users\\glen\\CodingProjects\\Local\\C#\\ZeroEPUB\\ZeroEPUB\\ZeroEPUB.csproj",
       "projectName": "ZeroEPUB",
-      "projectPath": "c:\\Users\\glen\\CodingProjects\\Local\\C#\\ZeroEPUB\\ZeroEPUB\\ZeroEPUB\\ZeroEPUB.csproj",
+      "projectPath": "c:\\Users\\glen\\CodingProjects\\Local\\C#\\ZeroEPUB\\ZeroEPUB\\ZeroEPUB.csproj",
       "packagesPath": "C:\\Users\\glen\\.nuget\\packages\\",
-      "outputPath": "c:\\Users\\glen\\CodingProjects\\Local\\C#\\ZeroEPUB\\ZeroEPUB\\ZeroEPUB\\obj\\",
+      "outputPath": "c:\\Users\\glen\\CodingProjects\\Local\\C#\\ZeroEPUB\\ZeroEPUB\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\glen\\AppData\\Roaming\\NuGet\\NuGet.Config",
