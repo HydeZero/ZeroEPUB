@@ -1,19 +1,12 @@
-﻿using Avalonia.Controls;
-using Avalonia.Media;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.VisualBasic;
-using Microsoft.VisualBasic.FileIO;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
+using System.Xml.XPath;
 
 namespace ZeroEPUB
 {
@@ -64,15 +57,28 @@ namespace ZeroEPUB
             Debug.WriteLine(Path.Combine(parentDir, contentFile));
 
 
-            XElement doc = XElement.Load(File.Open(Path.Combine(parentDir, contentFile), FileMode.OpenOrCreate, FileAccess.Read));
+            XmlReader reader = XmlReader.Create(File.Open(Path.Combine(parentDir, contentFile), FileMode.Open, FileAccess.Read));
             // Dont touch this if it works
-            var chapters = doc.Elements("item").SelectMany(a => (string)a.Attribute("media-type") == "application/xhtml-xml");
+            XElement doc = XElement.Load(reader);
+
+            XmlNameTable nameTable = reader.NameTable;
+            XmlNamespaceManager namespaceManager = new XmlNamespaceManager(nameTable);
+            namespaceManager.AddNamespace("package", "http://www.idpf.org/2007/opf");
+
+            IEnumerable<XElement> chapters = doc.XPathSelectElements("/package:manifest", namespaceManager);
 
             var chapterHref = new List<string>();
 
-            foreach (var chapt in chapters)
+            foreach (var chapt in chapters.Elements().ToArray())
             {
-                chapterHref.Add(chapt.);
+                try
+                {
+                    chapterHref.Add(chapt.Attribute("href").Value);
+                }
+                catch (Exception)
+                {
+                    continue;
+                }
             }
 
             return File.ReadAllText($"{parentDir}/{chapterHref[chapter]}");

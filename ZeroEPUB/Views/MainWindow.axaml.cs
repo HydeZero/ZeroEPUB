@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 
@@ -11,6 +12,9 @@ namespace ZeroEPUB.Views;
 public partial class MainWindow : Window
 {
     EpubOpener opener = new();
+    int chapterIndex = 0;
+    string currentFile = "";
+
     public MainWindow()
     {
         InitializeComponent();
@@ -29,9 +33,16 @@ public partial class MainWindow : Window
 
         if (files.Count >= 1)
         {
+            // set the filepath
+            currentFile = files[0].Name;
             // send file to epub opener
             opener.OpenEpub(files[0].TryGetLocalPath());
-            Debug.WriteLine(opener.GetContents(files[0].Name, 0));
+            Debug.WriteLine(opener.GetContents(currentFile, 0));
         }
+    }
+
+    public static void PreviousChapter(object source, RoutedEventArgs args)
+    {
+
     }
 }

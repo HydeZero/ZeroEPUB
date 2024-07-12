@@ -19,5 +19,8 @@
 		</Menu>
 		<TextBlock/>
 	</DockPanel>
+	
+	<!-- Create the button to move chapters -->
+	
 </Window>
 
