@@ -13,6 +13,6 @@ Requirements:
 Here are the issues that exist:
 
 * Crashes when loading file
-  * Issue has been pointed down to the parser for contents. It's in the `GetContents` function of [`ZeroEPUB/EpubOpener.cs`](https://github.com/HydeZero/ZeroEPUB/main/ZeroEPUB/EpubOpener.cs)
+  * Issue has been pointed down to the parser for contents. It's in the `GetContents` function of [`ZeroEPUB/EpubOpener.cs`](https://github.com/HydeZero/ZeroEPUB/main/blob/ZeroEPUB/EpubOpener.cs)
 
 ## Currently being made. Releases aren't available.
