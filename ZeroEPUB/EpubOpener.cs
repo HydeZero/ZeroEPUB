@@ -1,4 +1,5 @@
 ﻿using Avalonia.Controls;
+using Avalonia.Media;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.FileIO;
@@ -11,6 +12,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using System.Xml.Linq;
 
 namespace ZeroEPUB
 {
@@ -57,21 +59,28 @@ namespace ZeroEPUB
                 }
             }
 
-            XmlDocument doc = new XmlDocument();
+            XElement doc = XElement.Load(contentFile);
 
-            doc.Load(contentFile);
+            var chapters = doc.Descendants("manifest").SelectMany(a => a.Elements("item")).Where(b => (string)b.Attribute("media-type") == "application/xhtml-xml");
 
-            XmlNodeList items = doc.SelectNodes("//manifest/item[@media-type='application/xhtml+xml']");
+            List<Dictionary<string, string>> chapterList = chapters.Select(element => new Dictionary<string, string>());
 
-            List<string> chapters = new List<string>();
 
-            foreach (XmlNode node in items)
+            var chapterDict = chapters.Select(b => new
             {
-                string href = node.Attributes["href"].Value;
-                chapters.Add(href);
+                href = (string)b.Attribute("href"),
+                id = (string)b.Attribute("id"),
+                media_type = (string)b.Attribute("media-type")
+            }).ToDictionary(x => "id", x => new { x.id, x.href });
+
+            List<string> chapterHref = new List<string>();
+
+            foreach (var chapt in chapters)
+            {
+                chapterHref.Add((string)chapt.Attribute("href"));
             }
 
-            return File.ReadAllText($"{parentDir}/{chapters[chapter]}");
+            return File.ReadAllText($"{parentDir}/{chapterHref[chapter]}");
         }
     }
 }
