@@ -1,6 +1,8 @@
 # ZeroEPUB
 A good EPUB reader application for Windows and Linux.
 
+## Currently on hiatus, sorry.
+
 Made with the Avalonia UI framework.
 
 If you stumbled across this, hello. You can clone and help.
